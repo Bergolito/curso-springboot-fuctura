@@ -8,66 +8,70 @@
 - Classe Aluno
 
 
-    package br.com.fuctura.escola.model;
+        package br.com.fuctura.escola.model;
 
-    public class Aluno {
-        
-        	private Long id;
-        	private String cpf;
-        	private String nome;	
-        	private String email;	
-        	private String fone;
-            // Tipo pode ser CONVENCIONAL ou MONITOR
-        	private String tipo = TipoAluno.CONVENCIONAL.toString();
-        
-    }
+        public class Aluno {
+
+                private Long id;
+                private String cpf;
+                private String nome;	
+                private String email;	
+                private String fone;
+                // Tipo pode ser CONVENCIONAL ou MONITOR
+                private String tipo = TipoAluno.CONVENCIONAL.toString();
+
+        }
+
 
 - Classe Enum TipoAluno 
 
 
-    package br.com.fuctura.escola.model;
-    
-    public enum TipoAluno {
-    	CONVENCIONAL,
-    	MONITOR;
-    }
+        package br.com.fuctura.escola.model;
+
+        public enum TipoAluno {
+
+            CONVENCIONAL,
+            MONITOR;
+
+        }
 
 # Nosso primeiro EndPoint
 
-    @RestController
-    @RequestMapping("/primeiro")
-    public class PrimeiroController {
-    
-    	@GetMapping("/listar1")
-    	public List<Aluno> listar1(){
-    		Aluno aluno1 = new Aluno("11111111111", "Aluno 1", "aluno1@escola.com");
-    		Aluno aluno2 = new Aluno("22222222222", "Aluno 2", "aluno2@escola.com");
-    		Aluno aluno3 = new Aluno("33333333333", "Aluno 3", "aluno3@escola.com");
-    		
-    		return Arrays.asList(aluno1, aluno2, aluno3);
-    	}	
-    	
-    }
+        @RestController
+        @RequestMapping("/primeiro")
+        public class PrimeiroController {
+
+            @GetMapping("/listar1")
+            public List<Aluno> listar1(){
+                Aluno aluno1 = new Aluno("11111111111", "Aluno 1", "aluno1@escola.com");
+                Aluno aluno2 = new Aluno("22222222222", "Aluno 2", "aluno2@escola.com");
+                Aluno aluno3 = new Aluno("33333333333", "Aluno 3", "aluno3@escola.com");
+
+                return Arrays.asList(aluno1, aluno2, aluno3);
+            }	
+
+        }
 
 ## Criar o pacote br.com.fuctura.escola.dto
+
 - Classe AlunoDTO
 
 
-    public class AlunoDto {
-    
-    	private String cpf;
-    	private String nome;
-    	private String email;
-    	
-    	public AlunoDto(Aluno aluno) {
-    		this.cpf = aluno.getCpf();
-    		this.nome = aluno.getNome();
-    		this.email = aluno.getEmail();
-    	}
-    
-        // getters aqui
-    
-    }
+        public class AlunoDto {
+
+            private String cpf;
+            private String nome;
+            private String email;
+
+            public AlunoDto(Aluno aluno) {
+                this.cpf = aluno.getCpf();
+                this.nome = aluno.getNome();
+                this.email = aluno.getEmail();
+            }
+
+            // getters aqui
+
+        }
 
 ## Arquivo application.properties
 
@@ -90,4 +94,29 @@
     spring.h2.console.path=/h2-console
     
     
-    
+- Classe Aluno com JPA
+
+        @Entity
+        @Table
+        public class Aluno {
+
+            @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+            private Long id;
+
+            @Column(nullable = false, name = "CPF")
+            private String cpf;
+
+            @Column(nullable = false, name = "NOME")
+            private String nome;
+
+            @Column(nullable = true, name = "EMAIL")
+            private String email;
+
+            @Column(nullable = false, name = "FONE")
+            private String fone;
+
+            @Column(nullable = false, name = "TIPO")
+            private String tipo = TipoAluno.CONVENCIONAL.toString();
+
+        }    
+

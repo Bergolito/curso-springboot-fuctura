@@ -4,8 +4,13 @@
 
 ## Aula 02 - 06/08/2022
 
-## Classes do Modelo da API de Controle de Escola
-- Classe Aluno
+## Criar os seguintes pacotes:
+- br.com.fuctura.escola.model
+- br.com.fuctura.escola.dto
+- br.com.fuctura.escola.repository
+- br.com.fuctura.escola.controller
+
+## Classe Aluno
 
 
         package br.com.fuctura.escola.model;
@@ -23,7 +28,7 @@
         }
 
 
-- Classe Enum TipoAluno 
+## Classe Enum TipoAluno 
 
 
         package br.com.fuctura.escola.model;
@@ -35,7 +40,7 @@
 
         }
 
-# Nosso primeiro EndPoint
+## Nosso primeiro EndPoint
 
         @RestController
         @RequestMapping("/primeiro")
@@ -52,9 +57,7 @@
 
         }
 
-## Criar o pacote br.com.fuctura.escola.dto
-
-- Classe AlunoDTO
+## Classe AlunoDTO
 
 
         public class AlunoDto {
@@ -94,7 +97,7 @@
     spring.h2.console.path=/h2-console
     
     
-- Classe Aluno com JPA
+## Classe Aluno com JPA
 
         @Entity
         @Table
@@ -119,4 +122,16 @@
             private String tipo = TipoAluno.CONVENCIONAL.toString();
 
         }    
+
+
+## Arquivo data.sql
+
+        INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+        ('11111111111', 'Huguinho', 'aluno111@escola.com', '81 1234-5555', 'CONVENCIONAL');
+
+        INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+        ('22222222222', 'Zezinho', 'aluno222@escola.com', '81 1234-5555', 'CONVENCIONAL');
+
+        INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+        ('33333333333', 'Luizinho', 'aluno333@escola.com', '81 1234-5555', 'MONITOR');
 

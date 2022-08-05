@@ -76,6 +76,21 @@
 
         }
 
+## Melhorando nosso primeiro controlador
+
+	@GetMapping("/listar2")
+	public List<AlunoDto> listar2(){
+		Aluno aluno1 = new Aluno("11111111111", "Aluno 1", "aluno1@escola.com");
+		Aluno aluno2 = new Aluno("22222222222", "Aluno 2", "aluno2@escola.com");
+		Aluno aluno3 = new Aluno("33333333333", "Aluno 3", "aluno3@escola.com");
+		
+		List<Aluno> listaAlunos = Arrays.asList(aluno1, aluno2, aluno3);
+		
+		List<AlunoDto> listaAlunosDTO = listaAlunos.stream().map(AlunoDto::new).collect(Collectors.toList());		
+
+		return listaAlunosDTO;
+	}
+        
 ## Arquivo application.properties
 
 

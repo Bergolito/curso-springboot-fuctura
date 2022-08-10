@@ -144,6 +144,8 @@
 
 ## Criar o pacote br.com.fuctura.escola.controller.form
 
+	package br.com.fuctura.escola.controller.form;
+
 ## No pacote br.com.fuctura.escola.controller.form, criar a classe AlunoForm
 
 	public class AlunoForm {

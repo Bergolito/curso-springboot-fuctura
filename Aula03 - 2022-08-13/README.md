@@ -169,19 +169,19 @@
 		private String tipo;
 
 		// ... getters/setters
-
-		public Aluno converterDTO(AlunoRepository alunoRepository) {
+		public Aluno converterDTO() {
 			Aluno aluno = new Aluno(cpf, nome, email, fone, tipo); 
 			return aluno;
 		}
-	}
+
+}
 
 ## Em AlunosControlador, cria o serviço POST para cadastrar novo aluno
 
 	@PostMapping
 	@Transactional
 	public ResponseEntity<AlunoDto> cadastrar(@RequestBody @Valid AlunoForm form) {
-		Aluno aluno = form.converterDTO(alunoRepository);
+		Aluno aluno = form.converterDTO();
 		alunoRepository.save(aluno);
 		
 		return new ResponseEntity<AlunoDto>(new AlunoDto(aluno), HttpStatus.CREATED);

@@ -4,36 +4,6 @@
 
 ## Aula 03 - 13/08/2022
 
-## Classe Aluno
-
-
-        package br.com.fuctura.escola.model;
-
-        public class Aluno {
-
-                private Long id;
-                private String cpf;
-                private String nome;	
-                private String email;	
-                private String fone;
-                // Tipo pode ser CONVENCIONAL ou MONITOR
-                private String tipo = TipoAluno.CONVENCIONAL.toString();
-
-        }
-
-
-## Classe Enum TipoAluno 
-
-
-        package br.com.fuctura.escola.model;
-
-        public enum TipoAluno {
-
-            CONVENCIONAL,
-            MONITOR;
-
-        }
-
 ## Nosso primeiro EndPoint
 
         @RestController

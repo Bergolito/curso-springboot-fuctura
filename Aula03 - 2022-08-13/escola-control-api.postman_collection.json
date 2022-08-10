@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "c48f8e44-9494-4972-bb1e-49c8bbaced4f",
+		"name": "escola-control-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8724395"
+	},
+	"item": [
+		{
+			"name": "alunos",
+			"item": [
+				{
+					"name": "alunos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/alunos",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alunos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cpf\": \"44444444444\",\n\t\"nome\": \"Pato Donald\",\n\t\"email\": \"superduck@escola.com\",\t\n    \"fone\": \"81 4444-4444\",\t\n\t\"tipo\": \"CONVENCIONAL\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/alunos",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alunos",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\t{\n\t\t\"nome\": \"Huguinho Super Top Hyper\",\n\t\t\"email\": \"aluno111@escola.com\",\n\t\t\"fone\": \"81 3232-6666\",\n\t\t\"dataNasc\": \"2000-05-10\",\n\t\t\"tipo\": \"MONITOR\"\n\t}"
+						},
+						"url": {
+							"raw": "localhost:8080/alunos/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alunos",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/alunos/5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detalhar-alunos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/alunos/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"alunos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "professores",
+			"item": [
+				{
+					"name": "professores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/professores",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"professores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "professores",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cpf\": \"44444444444\",\n\t\"nome\": \"Pato Donald\",\n\t\"email\": \"superduck@escola.com\",\t\n  \"fone\": \"81 4444-4444\",\n\t\"dataNasc\": \"2005-12-14\",\n\t\"tipo\": \"CONVENCIONAL\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/professores",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"professores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "professores",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/professores",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"professores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "professores",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/professores",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"professores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detalhar-professores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/professores",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"professores"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

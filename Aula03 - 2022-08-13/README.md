@@ -114,3 +114,17 @@
         INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
         ('33333333333', 'Luizinho', 'aluno333@escola.com', '81 1234-5555', 'MONITOR');
 
+## Criando o repositório de Aluno
+
+	public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+
+	}
+
+## Criando o controlador de Aluno
+
+	@RestController
+	@RequestMapping("/alunos")
+	public class AlunosController {
+		
+		//
+	}

@@ -114,13 +114,13 @@
         INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
         ('33333333333', 'Luizinho', 'aluno333@escola.com', '81 1234-5555', 'MONITOR');
 
-## Criando o repositório de Aluno
+## No pacote br.com.fuctura.escola.repository, cria o repositório de Aluno
 
 	public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
 	}
 
-## Criando o controlador de Aluno
+## No pacote br.com.fuctura.escola.controller, cria o controlador de Aluno
 
 	@RestController
 	@RequestMapping("/alunos")
@@ -128,3 +128,173 @@
 		
 		//
 	}
+
+## Injeta o repositório de Aluno no AlunosControlador
+
+	@Autowired
+	private AlunoRepository alunoRepository;
+	
+## Em AlunosControlador, cria o serviço GET para listar alunos
+
+	@GetMapping
+	public List<AlunoDto> listaAlunos() {
+		List<Aluno> Alunos = alunoRepository.findAll();
+		return AlunoDto.converter(Alunos);
+	}
+
+## Criar o pacote br.com.fuctura.escola.controller.form
+
+## No pacote br.com.fuctura.escola.controller.form, criar a classe AlunoForm
+
+	public class AlunoForm {
+
+		@NotNull @NotEmpty @Length(min = 11, max = 11)
+		private String cpf;
+
+		@NotNull @NotEmpty  @Length(min = 5)
+		private String nome;
+
+		@Nullable
+		private String email;
+
+		@Nullable
+		private String fone;
+
+		@Nullable
+		private String dataNasc;
+
+		@Nullable
+		private String tipo;
+
+		// ... getters/setters
+
+		public Aluno converterDTO(AlunoRepository alunoRepository) {
+			Aluno aluno = new Aluno(cpf, nome, email, fone, tipo); 
+			return aluno;
+		}
+	}
+
+## Em AlunosControlador, cria o serviço POST para cadastrar novo aluno
+
+	@PostMapping
+	@Transactional
+	public ResponseEntity<AlunoDto> cadastrar(@RequestBody @Valid AlunoForm form) {
+		Aluno aluno = form.converterDTO(alunoRepository);
+		alunoRepository.save(aluno);
+		
+		return new ResponseEntity<AlunoDto>(new AlunoDto(aluno), HttpStatus.CREATED);
+	}
+
+## No pacote br.com.fuctura.escola.dto, criar a classe DetalhesDoAlunoDto
+
+	public class DetalhesDoAlunoDto {
+
+		private Long id;
+		private String cpf;
+		private String nome;
+		private String email;
+		private String fone;
+		private String tipo;
+
+		public DetalhesDoAlunoDto(Aluno aluno) {
+			this.id = aluno.getId();
+			this.cpf = aluno.getCpf();
+			this.nome = aluno.getNome();
+			this.email = aluno.getEmail();
+			this.fone = aluno.getFone();
+			this.tipo = aluno.getTipo().toString();
+		}
+
+	}
+
+## Em AlunosControlador, cria o serviço GET para detalhar um aluno já existente
+
+	@GetMapping("/{id}")
+	public ResponseEntity<DetalhesDoAlunoDto> detalhar(@PathVariable Long id) {
+		Optional<Aluno> Aluno = alunoRepository.findById(id);
+		if (Aluno.isPresent()) {
+			return ResponseEntity.ok(new DetalhesDoAlunoDto(Aluno.get()));
+		}
+		
+		return ResponseEntity.notFound().build();
+	}
+
+## No pacote br.com.fuctura.escola.controller.form, criar a classe AtualizacaoAlunoForm
+
+	public class AtualizacaoAlunoForm {
+
+		@NotNull @NotEmpty  @Length(min = 5)
+		private String nome;
+
+		@Nullable
+		private String email;
+
+		@Nullable
+		private String fone;
+
+		@Nullable
+		private String tipo;
+
+		public String getNome() {
+			return nome;
+		}
+
+		public String getEmail() {
+			return email;
+		}
+
+		public String getFone() {
+			return fone;
+		}
+
+		public String getTipo() {
+			return tipo;
+		}
+
+		public Aluno atualizar(Long id, AlunoRepository alunoRepository) {
+			Optional<Aluno> aluno = alunoRepository.findById(id);
+
+			if(aluno.isPresent()) {
+				aluno.get().setNome(this.nome);
+				aluno.get().setEmail(this.email);
+				aluno.get().setFone(this.fone);
+				aluno.get().setTipo(this.tipo);
+
+				return aluno.get();
+			}
+
+			return null;
+		}
+
+	}
+
+## Em AlunosControlador, cria o serviço PUT para atualizar os dados de um aluno já existente
+
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<AlunoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoAlunoForm form) {
+		Optional<Aluno> optional = alunoRepository.findById(id);
+		if (optional.isPresent()) {
+			Aluno Aluno = form.atualizar(id, alunoRepository);
+			return ResponseEntity.ok(new AlunoDto(Aluno));
+		}
+		
+		return ResponseEntity.notFound().build();
+	}
+
+
+## Em AlunosControlador, cria o serviço DELETE para remover os dados de um aluno já existente
+
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> remover(@PathVariable Long id) {
+		Optional<Aluno> optional = alunoRepository.findById(id);
+		if (optional.isPresent()) {
+			alunoRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		
+		return ResponseEntity.notFound().build();
+	}
+
+

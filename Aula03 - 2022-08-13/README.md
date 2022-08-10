@@ -2,43 +2,7 @@
 
 # Fuctura - Curso de Spring Boot
 
-## Aula 02 - 06/08/2022
-
-## Criar os seguintes pacotes:
-- br.com.fuctura.escola.model
-- br.com.fuctura.escola.dto
-- br.com.fuctura.escola.repository
-- br.com.fuctura.escola.controller
-
-## Classe Aluno
-
-
-        package br.com.fuctura.escola.model;
-
-        public class Aluno {
-
-                private Long id;
-                private String cpf;
-                private String nome;	
-                private String email;	
-                private String fone;
-                // Tipo pode ser CONVENCIONAL ou MONITOR
-                private String tipo = TipoAluno.CONVENCIONAL.toString();
-
-        }
-
-
-## Classe Enum TipoAluno 
-
-
-        package br.com.fuctura.escola.model;
-
-        public enum TipoAluno {
-
-            CONVENCIONAL,
-            MONITOR;
-
-        }
+## Aula 03 - 13/08/2022
 
 ## Nosso primeiro EndPoint
 

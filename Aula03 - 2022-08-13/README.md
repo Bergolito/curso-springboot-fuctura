@@ -2,13 +2,7 @@
 
 # Fuctura - Curso de Spring Boot
 
-## Aula 02 - 06/08/2022
-
-## Criar os seguintes pacotes:
-- br.com.fuctura.escola.model
-- br.com.fuctura.escola.dto
-- br.com.fuctura.escola.repository
-- br.com.fuctura.escola.controller
+## Aula 03 - 13/08/2022
 
 ## Classe Aluno
 

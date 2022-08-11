@@ -4,6 +4,28 @@
 
 ## Aula 04 - 20/08/2022
 
+## Melhorar o método de listarAlunos adicionando parâmetro nomeAluno
+
+    @GetMapping
+    public List<AlunoDto> listaAlunos(String nomeAluno) {
+      if (nomeAluno == null) {
+        List<Aluno> Alunos = alunoRepository.findAll();
+        return AlunoDto.converter(Alunos);
+      } else {
+        List<Aluno> Alunos = alunoRepository.findByNome(nomeAluno);
+        return AlunoDto.converter(Alunos);
+      }
+    }
+
+- No AlunosRepository, adicionar o método abstrato findByNome()
+
+      public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+
+        // métodos
+        List<Aluno> findByNome(String nomeAluno);
+      }
+
+
 ## Paginação nos serviços de consulta (GET)
 
 - paginação

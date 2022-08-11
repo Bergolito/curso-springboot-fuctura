@@ -20,7 +20,16 @@
 
 - autenticação
 
-## Outro tópico
+## Projeto Lombok
 
-- Outro tópico
+- projeto Lombok
+
+## Swagger
+
+- Swagger
+
+## Projeto da API de Escola
+
+- projeto da API de Escola
+
 

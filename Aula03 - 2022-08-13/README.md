@@ -35,7 +35,7 @@
 		</dependency>
 
 
-### Criar a classe DTO - AlunoDTO
+### No pacote br.com.fuctura.escola.dto, criar a classe DTO - AlunoDTO
 
         public class AlunoDto {
 
@@ -72,7 +72,8 @@
 
         }
 
-### Novo método de listagem de alunos retornando AlunoDto
+
+### Na classe PrimeiroController, adicionar novo método de listagem de alunos retornando uma lista de objetos AlunoDto
 
 	@GetMapping("/listar2")
 	public List<AlunoDto> listarAlunos2(){
@@ -112,7 +113,7 @@
     spring.h2.console.path=/h2-console
     
     
-## Classe Aluno com JPA
+## Na classe Aluno, adicionar as anotações referentes ao JPA
 
         @Entity
         @Table
@@ -139,7 +140,7 @@
         }    
 
 
-## Arquivo data.sql
+## No arquivo data.sql, adicionar o comando INSERT de três registros de Aluno
 
         INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
         ('11111111111', 'Huguinho', 'aluno111@escola.com', '81 1234-5555', 'CONVENCIONAL');
@@ -150,11 +151,18 @@
         INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
         ('33333333333', 'Luizinho', 'aluno333@escola.com', '81 1234-5555', 'MONITOR');
 
-## No pacote br.com.fuctura.escola.repository, cria o repositório de Aluno
+- Após executar o comando de SQL para inserir alunos, acessar no navegador a url http://localhost:8080/h2-console
 
-	public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
-	}
+
+## No pacote br.com.fuctura.escola.repository, cria a interface AlunoRepository referente ao repositório de Aluno
+
+- Extende a interface JpaRepository<T, ID>, substituindo o **T** pela classe de entidade (Aluno) e o **ID** pelo tipo da chave (Long) 
+
+		public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+			//
+		}
+
 
 ## No pacote br.com.fuctura.escola.controller, cria o controlador de Aluno
 
@@ -170,13 +178,15 @@
 	@Autowired
 	private AlunoRepository alunoRepository;
 	
-## Em AlunosControlador, cria o serviço GET para listar alunos
+## Em AlunosController, cria o serviço GET para listar alunos
 
 	@GetMapping
 	public List<AlunoDto> listaAlunos() {
 		List<Aluno> Alunos = alunoRepository.findAll();
 		return AlunoDto.converter(Alunos);
 	}
+	
+- Testar o serviço GET criando no seu navegador ou no cliente Postman através da url: localhost:8080/alunos
 
 ## Criar o pacote br.com.fuctura.escola.controller.form
 
@@ -219,7 +229,7 @@
 
 	}
 
-## Em AlunosControlador, cria o serviço POST para cadastrar novo aluno
+## Em AlunosController, cria o serviço POST para cadastrar novo aluno
 
 	@PostMapping
 	@Transactional
@@ -230,7 +240,7 @@
 		return new ResponseEntity<AlunoDto>(new AlunoDto(aluno), HttpStatus.CREATED);
 	}
 
-- Para testar, faz-se necessário duas coisas:
+- Para testar o método POST cadastrar, faz-se necessário duas coisas:
 	  
 	1) Na aba Headers (cabeçalho) do Postman, adicionar a propriedade **Content-Type** com o valor **application/json** 	  
 	2) Na aba Body (corpo da requisição), adicionar os dados para a classe **AlunoForm**
@@ -243,6 +253,8 @@
 		"tipo": "CONVENCIONAL" <br>
 	} <br>
 
+- Após cadastrar novo Aluno, executar o serviço **GET** de listarAlunos através da url localhost:8080/alunos para verificar se existe um novo aluno (4 alunos no total)
+	  
 ## No pacote br.com.fuctura.escola.dto, criar a classe DetalhesDoAlunoDto
 
 	public class DetalhesDoAlunoDto {
@@ -263,10 +275,10 @@
 			this.tipo = aluno.getTipo().toString();
 		}
 
-	  	// getters/setters
+	  	// cria apenas os métodos getters
 	}
 
-## Em AlunosControlador, cria o serviço GET para detalhar um aluno já existente
+## Em AlunosController, cria o serviço **GET** para detalhar um aluno já existente
 
 	@GetMapping("/{id}")
 	public ResponseEntity<DetalhesDoAlunoDto> detalhar(@PathVariable Long id) {
@@ -277,6 +289,10 @@
 		
 		return ResponseEntity.notFound().build();
 	}
+	  
+- Para testar o serviço **GET** de detalhar aluno, acessar através da url localhost:8080/alunos/{id} 
+	  
+	- Exemplo: localhost:8080/alunos/1 (passa o id do aluno como parâmetro)	  
 
 ## No pacote br.com.fuctura.escola.controller.form, criar a classe AtualizacaoAlunoForm
 
@@ -327,7 +343,7 @@
 
 	}
 
-## Em AlunosControlador, cria o serviço PUT para atualizar os dados de um aluno já existente
+## Em AlunosController, cria o serviço **PUT** para atualizar os dados de um aluno já existente
 
 	@PutMapping("/{id}")
 	@Transactional
@@ -341,8 +357,24 @@
 		return ResponseEntity.notFound().build();
 	}
 
+- Para testar o método PUT atualizar, faz-se necessário duas coisas:
+	  
+	1) Na aba Headers (cabeçalho) do Postman, adicionar a propriedade **Content-Type** com o valor **application/json** 	  
+	2) Na aba Body (corpo da requisição), adicionar os dados para a classe **AtualizacaoAlunoForm**
+	  
+		{ <br>
+		    "cpf": "11111111111", <br>
+		    "nome": "Huguinho Novo aluno 2022", <br>
+		    "email": "aluno111-huguinho@escola.com", <br>
+		    "fone": "81 1234-5555", <br>
+		    "tipo": "CONVENCIONAL" <br>
+		} <br>
+	  
+	3) Acessar o serviço **PUT** através da URL localhost:8080/alunos/1, passando o json de atualização no corpo da requisição
+	4) Após a atualização, chamar o serviço **GET** de listarAlunos (localhost:8080/alunos) e verificar se o registro de id 1 atualizou 
 
-## Em AlunosControlador, cria o serviço DELETE para remover os dados de um aluno já existente
+	  
+## Em AlunosController, cria o serviço **DELETE** para remover os dados de um aluno já existente
 
 	@DeleteMapping("/{id}")
 	@Transactional
@@ -356,7 +388,14 @@
 		return ResponseEntity.notFound().build();
 	}
 
-## Classe AlunosControlador completa
+- Para testar o serviço **DELETE** de excluir aluno, acessar através da url localhost:8080/alunos/{id}
+
+	- Exemplo: localhost:8080/alunos/4 (passa o id do aluno como parâmetro)	  
+
+	- Após a exclusão de aluno, chamar o serviço GET de listarAlunos (localhost:8080/alunos) e verificar se ainda existe o registro de id 4
+
+
+## Classe AlunosController completa
 
 	package br.com.fuctura.escola.controller;
 

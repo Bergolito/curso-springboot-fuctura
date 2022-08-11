@@ -10,14 +10,14 @@
         @RequestMapping("/primeiro")
         public class PrimeiroController {
 
-            @GetMapping("/listar1")
-            public List<Aluno> listar1(){
-                Aluno aluno1 = new Aluno("11111111111", "Aluno 1", "aluno1@escola.com");
-                Aluno aluno2 = new Aluno("22222222222", "Aluno 2", "aluno2@escola.com");
-                Aluno aluno3 = new Aluno("33333333333", "Aluno 3", "aluno3@escola.com");
+		@GetMapping("/listar1")
+		public List<Aluno> listarAlunos1(){
+			Aluno aluno1 = new Aluno("11111111111", "Aluno 1", "aluno1@escola.com", "81 1234-5678", TipoAluno.CONVENCIONAL.toString());
+			Aluno aluno2 = new Aluno("22222222222", "Aluno 2", "aluno2@escola.com", "81 1234-5678", TipoAluno.CONVENCIONAL.toString());
+			Aluno aluno3 = new Aluno("33333333333", "Aluno 3", "aluno3@escola.com", "81 1234-5678", TipoAluno.MONITOR.toString());
 
-                return Arrays.asList(aluno1, aluno2, aluno3);
-            }	
+			return Arrays.asList(aluno1, aluno2, aluno3);
+		}
 
         }
 
@@ -26,27 +26,41 @@
 
         public class AlunoDto {
 
-            private String cpf;
-            private String nome;
-            private String email;
+		@NotNull @NotEmpty @Length(min = 11, max = 11)
+		private String cpf;
 
-            public AlunoDto(Aluno aluno) {
-                this.cpf = aluno.getCpf();
-                this.nome = aluno.getNome();
-                this.email = aluno.getEmail();
-            }
+		@NotNull @NotEmpty @Length(min = 5)
+		private String nome;
 
-            // getters aqui
+		@Nullable
+		private String email;
+
+		@Nullable
+		private String fone;
+
+		@Nullable 
+		private String tipo;
+
+		// Construtor
+		public AlunoDto(Aluno aluno) {
+			this.cpf = aluno.getCpf();
+			this.nome = aluno.getNome();
+			this.email = aluno.getEmail();
+			this.fone = aluno.getFone();
+			this.tipo = aluno.getTipo();
+		}
+		
+	        // getters aqui
 
         }
 
 ## Melhorando nosso primeiro controlador
 
 	@GetMapping("/listar2")
-	public List<AlunoDto> listar2(){
-		Aluno aluno1 = new Aluno("11111111111", "Aluno 1", "aluno1@escola.com");
-		Aluno aluno2 = new Aluno("22222222222", "Aluno 2", "aluno2@escola.com");
-		Aluno aluno3 = new Aluno("33333333333", "Aluno 3", "aluno3@escola.com");
+	public List<AlunoDto> listarAlunos2(){
+		Aluno aluno1 = new Aluno("11111111111", "Aluno 1", "aluno1@escola.com", "81 1234-5678", TipoAluno.CONVENCIONAL.toString());
+		Aluno aluno2 = new Aluno("22222222222", "Aluno 2", "aluno2@escola.com", "81 1234-5678", TipoAluno.CONVENCIONAL.toString());
+		Aluno aluno3 = new Aluno("33333333333", "Aluno 3", "aluno3@escola.com", "81 1234-5678", TipoAluno.MONITOR.toString());
 		
 		List<Aluno> listaAlunos = Arrays.asList(aluno1, aluno2, aluno3);
 		
@@ -82,22 +96,22 @@
         @Table
         public class Aluno {
 
-            @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+            **@Id @GeneratedValue(strategy = GenerationType.IDENTITY)**
             private Long id;
 
-            @Column(nullable = false, name = "CPF")
+            **@Column(nullable = false, name = "CPF")**
             private String cpf;
 
-            @Column(nullable = false, name = "NOME")
+            **@Column(nullable = false, name = "NOME")**
             private String nome;
 
-            @Column(nullable = true, name = "EMAIL")
+            **@Column(nullable = true, name = "EMAIL")**
             private String email;
 
-            @Column(nullable = false, name = "FONE")
+            **@Column(nullable = false, name = "FONE")**
             private String fone;
 
-            @Column(nullable = false, name = "TIPO")
+            **@Column(nullable = false, name = "TIPO")**
             private String tipo = TipoAluno.CONVENCIONAL.toString();
 
         }    
@@ -116,7 +130,7 @@
 
 ## No pacote br.com.fuctura.escola.repository, cria o repositório de Aluno
 
-	public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+	public interface AlunoRepository extends **JpaRepository<Aluno, Long>** {
 
 	}
 
@@ -131,7 +145,7 @@
 
 ## Injeta o repositório de Aluno no AlunosControlador
 
-	@Autowired
+	**@Autowired**
 	private AlunoRepository alunoRepository;
 	
 ## Em AlunosControlador, cria o serviço GET para listar alunos
@@ -160,22 +174,19 @@
 
 	public class AlunoForm {
 
-		@NotNull @NotEmpty @Length(min = 11, max = 11)
+		**@NotNull @NotEmpty @Length(min = 11, max = 11)**
 		private String cpf;
 
-		@NotNull @NotEmpty  @Length(min = 5)
+		**@NotNull @NotEmpty  @Length(min = 5)**
 		private String nome;
 
-		@Nullable
+		**@Nullable**
 		private String email;
 
-		@Nullable
+		**@Nullable**
 		private String fone;
 
-		@Nullable
-		private String dataNasc;
-
-		@Nullable
+		**@Nullable**
 		private String tipo;
 
 		// ... getters/setters

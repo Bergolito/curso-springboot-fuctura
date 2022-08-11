@@ -20,9 +20,22 @@
 		}
 
         }
+	
+- Testar no seu navegador ou no cliente Postman através da url: localhost:8080/primeiro/listar1
+	
+## Melhorando nosso primeiro controlador
+	
+- Criação de um outro endpoint para listar os alunos criados, mas desta vez retornando objetos AlunoDto
 
-##  Criar a classe DTO - AlunoDTO
+- Adicionar no seu pom a nova dependência do projeto referente ao Bean Validation
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+
+### Criar a classe DTO - AlunoDTO
 
         public class AlunoDto {
 
@@ -49,12 +62,17 @@
 			this.fone = aluno.getFone();
 			this.tipo = aluno.getTipo();
 		}
-		
+
+		// converte Aluno em AlunoDto
+		public static List<AlunoDto> converter(List<Aluno> alunos) {
+			return alunos.stream().map(AlunoDto::new).collect(Collectors.toList());
+		}
+
 	        // getters aqui
 
         }
 
-## Melhorando nosso primeiro controlador
+### Novo método de listagem de alunos retornando AlunoDto
 
 	@GetMapping("/listar2")
 	public List<AlunoDto> listarAlunos2(){
@@ -68,7 +86,11 @@
 
 		return listaAlunosDTO;
 	}
-        
+
+- Testar no seu navegador ou no cliente Postman através da url: localhost:8080/primeiro/listar2
+
+# Spring Data JPA (Java Persistence API)
+
 ## Arquivo application.properties
 
 
@@ -96,22 +118,22 @@
         @Table
         public class Aluno {
 
-            **@Id @GeneratedValue(strategy = GenerationType.IDENTITY)**
+            @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
             private Long id;
 
-            **@Column(nullable = false, name = "CPF")**
+            @Column(nullable = false, name = "CPF")
             private String cpf;
 
-            **@Column(nullable = false, name = "NOME")**
+            @Column(nullable = false, name = "NOME")
             private String nome;
 
-            **@Column(nullable = true, name = "EMAIL")**
+            @Column(nullable = true, name = "EMAIL")
             private String email;
 
-            **@Column(nullable = false, name = "FONE")**
+            @Column(nullable = false, name = "FONE")
             private String fone;
 
-            **@Column(nullable = false, name = "TIPO")**
+            @Column(nullable = false, name = "TIPO")
             private String tipo = TipoAluno.CONVENCIONAL.toString();
 
         }    
@@ -130,7 +152,7 @@
 
 ## No pacote br.com.fuctura.escola.repository, cria o repositório de Aluno
 
-	public interface AlunoRepository extends **JpaRepository<Aluno, Long>** {
+	public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
 	}
 
@@ -145,7 +167,7 @@
 
 ## Injeta o repositório de Aluno no AlunosControlador
 
-	**@Autowired**
+	@Autowired
 	private AlunoRepository alunoRepository;
 	
 ## Em AlunosControlador, cria o serviço GET para listar alunos
@@ -174,19 +196,19 @@
 
 	public class AlunoForm {
 
-		**@NotNull @NotEmpty @Length(min = 11, max = 11)**
+		@NotNull @NotEmpty @Length(min = 11, max = 11)
 		private String cpf;
 
-		**@NotNull @NotEmpty  @Length(min = 5)**
+		@NotNull @NotEmpty  @Length(min = 5)
 		private String nome;
 
-		**@Nullable**
+		@Nullable
 		private String email;
 
-		**@Nullable**
+		@Nullable
 		private String fone;
 
-		**@Nullable**
+		@Nullable
 		private String tipo;
 
 		// ... getters/setters
@@ -195,7 +217,7 @@
 			return aluno;
 		}
 
-}
+	}
 
 ## Em AlunosControlador, cria o serviço POST para cadastrar novo aluno
 
@@ -207,6 +229,19 @@
 		
 		return new ResponseEntity<AlunoDto>(new AlunoDto(aluno), HttpStatus.CREATED);
 	}
+
+- Para testar, faz-se necessário duas coisas:
+	  
+	1) Na aba Headers (cabeçalho) do Postman, adicionar a propriedade **Content-Type** com o valor **application/json** 	  
+	2) Na aba Body (corpo da requisição), adicionar os dados para a classe **AlunoForm**
+	  
+	{ <br>
+		"cpf": "44444444444", <br>
+		"nome": "Pato Donald", <br>
+		"email": "superduck@escola.com", <br> 
+		"fone": "81 4444-4444",	<br> 
+		"tipo": "CONVENCIONAL" <br>
+	} <br>
 
 ## No pacote br.com.fuctura.escola.dto, criar a classe DetalhesDoAlunoDto
 
@@ -228,6 +263,7 @@
 			this.tipo = aluno.getTipo().toString();
 		}
 
+	  	// getters/setters
 	}
 
 ## Em AlunosControlador, cria o serviço GET para detalhar um aluno já existente

@@ -149,11 +149,11 @@
 ## Spring Validation
 
 - Anotações específicas para validação dos dados do DTO: 
-  @NotNull 
-  @NotEmpty 
-  @Length(min = 11, max = 11)
-  @Size
-  @Nullable
+  <p>@NotNull 
+  <p>@NotEmpty 
+  <p>@Length(min = 11, max = 11)
+  <p>@Size
+  <p>@Nullable
 
 ## No pacote br.com.fuctura.escola.controller.form, criar a classe AlunoForm
 

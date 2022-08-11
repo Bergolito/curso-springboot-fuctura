@@ -146,7 +146,17 @@
 
 	package br.com.fuctura.escola.controller.form;
 
+## Spring Validation
+
+- Anotações específicas para validação dos dados do DTO: 
+  <p>@NotNull 
+  <p>@NotEmpty 
+  <p>@Length(min = 11, max = 11)
+  <p>@Size
+  <p>@Nullable
+
 ## No pacote br.com.fuctura.escola.controller.form, criar a classe AlunoForm
+
 
 	public class AlunoForm {
 

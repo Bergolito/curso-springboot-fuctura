@@ -183,21 +183,3 @@
 
 			return new ResponseEntity<AlunoDto>(new AlunoDto(aluno), HttpStatus.CREATED);
 		}		
-	
-## Autenticação
-
-- autenticação
-
-## Projeto Lombok
-
-- projeto Lombok
-
-## Swagger
-
-- Swagger
-
-## Projeto da API de Escola
-
-- projeto da API de Escola
-
-

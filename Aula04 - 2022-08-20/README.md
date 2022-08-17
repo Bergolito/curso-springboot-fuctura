@@ -4,20 +4,22 @@
 
 ## Aula 04 - 20/08/2022
 
-## Melhorar o método de listarAlunos adicionando parâmetro nomeAluno
+# Em **AlunosController**, melhorar o método de listarAlunos adicionando parâmetro nomeAluno
 
-    @GetMapping
-    public List<AlunoDto> listaAlunos(String nomeAluno) {
-      if (nomeAluno == null) {
-        List<Aluno> Alunos = alunoRepository.findAll();
-        return AlunoDto.converter(Alunos);
-      } else {
-        List<Aluno> Alunos = alunoRepository.findByNome(nomeAluno);
-        return AlunoDto.converter(Alunos);
-      }
-    }
+	@GetMapping
+	public List<AlunoDto> listaAlunos(@RequestParam(required = false) String nomeAluno){
+		
+	  if (nomeAluno == null) {
+	    List<Aluno> Alunos = alunoRepository.findAll();
+	    return AlunoDto.converter(Alunos);
+	  } else {
+	    List<Aluno> Alunos = alunoRepository.findByNome(nomeAluno);
+	    return AlunoDto.converter(Alunos);
+	  }
+	}
 
-- No AlunosRepository, adicionar o método abstrato findByNome()
+
+- Na interface **AlunosRepository**, adicionar o método abstrato findByNome()
 
       public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
@@ -25,7 +27,7 @@
         List<Aluno> findByNome(String nomeAluno);
       }
 
-- No repositório podemos ter mais métodos, por exemplo:
+- No repositório de Alunos, podemos ter mais métodos, por exemplo:
         
         List<Aluno> findByCpf(String cpf);
 
@@ -57,7 +59,7 @@
             return alunos.map(AlunoDto::new);
         }
 
-- Em AlunoRepository, o método findByNome() agora recebe o Pageable como parâmetro
+- Em AlunoRepository, o método findByNome() agora recebe o Pageable como parâmetro, e retorna não mais uma lista de Aluno mas uma coleção Page<Aluno>
 
 	    Page<Aluno> findByNome(String nomeAluno, Pageable paginacao);
 
@@ -91,10 +93,20 @@
 		INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
 		('99999999999', 'José', 'aluno333@escola.com', '81 1234-5555', 'MONITOR');
 
-	
+		INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+		('99999999999', 'Paulo', 'aluno333@escola.com', '81 1234-5555', 'MONITOR');
 
-    - Para testar, é só acessar a url no Postman, passando a informação do número da página (&page) e a quantidade de registros por página (size).
-        Exemplo: localhost:8080/alunos?page=0&size=3
+		INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+		('99999999999', 'Roberto', 'aluno333@escola.com', '81 1234-5555', 'MONITOR');
+
+
+- Para testar, é só acessar a url no Postman, e na aba **Params** passar a informação do número da página (&page) e a quantidade de registros por página (size). <br>
+
+  Exemplos:  <br>
+  localhost:8080/alunos <br>
+  localhost:8080/alunos?page=0&size=5 <br>
+  localhost:8080/alunos?page=1&size=5 <br>
+  localhost:8080/alunos?page=2&size=5 <br>
 
 
 ## Ordenação
@@ -102,9 +114,12 @@
 - Agora que já temos o suporte à Paginação, ficou mais fácil para ordenar os registros. É só passar na própria requisição as informações referentes à ordenação.
 
     Exemplos: <br>
-    localhost:8080/alunos?**page**=0&**size**=3&**sort**=nome,asc <br>
-    localhost:8080/alunos?**page**=0&**size**=9&**sort**=nome,asc&**sort**=email,desc <br>
-    
+	localhost:8080/alunos?size=15&sort=nome,asc <br>
+	localhost:8080/alunos?size=15&sort=nome,desc <br>
+	localhost:8080/alunos?size=15&sort=cpf,asc  <br>
+	localhost:8080/alunos?size=15&sort=nome,asc&sort=cpf,desc  <br>
+
+
 
 ## Cache de Consultas
 

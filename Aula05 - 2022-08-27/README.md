@@ -21,6 +21,18 @@
     
 - No pacote br.com.fuctura.escola.model, adicionar as seguintes classes: Perfil.java e Usuario.java
 
+- Na classe Usuario.java, observar o detalhe:
+
+	@Entity <br>
+	public class Usuario implements UserDetails {
+
+	}
+
+	@Entity <br>
+	public class Perfil implements GrantedAuthority {
+
+	}
+	
 - No arquivo data.sql, adicionar os inserts referentes ao Usuário:
 
       /*
@@ -31,6 +43,11 @@
 
 
 - No pacote br.com.fuctura.escola.repository, criar a classe referente ao Repositório de Usuário: UsuarioRepository.java
+
+		public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+
+		    Optional<Usuario> findByEmail (String email);
+		}
 
 - Criar o pacote  br.com.fuctura.escola.config.security, dentro dele colar as seguintes classes: AutenticacaoService, AutenticacaoViaTokenFilter, SecurityConfigurations e TokenService
 
@@ -68,8 +85,55 @@
 - No pacote br.com.fuctura.escola.controller.form, adicionar a classe LoginForm
 
 - No pacote br.com.fuctura.escola.controller, adicionar a classe AutenticacaoController
-- 
+
+		@RestController
+		@RequestMapping("/auth")
+		public class AutenticacaoController {
+
+			@Autowired
+			private AuthenticationManager authManager;
+
+			@Autowired
+			private TokenService tokenService;
+
+			@PostMapping
+			public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form) {
+				UsernamePasswordAuthenticationToken dadosLogin = form.converter();
+
+				try {
+					Authentication authentication = authManager.authenticate(dadosLogin);
+					String token = tokenService.gerarToken(authentication);
+					System.out.println("Token => "+token);
+					return ResponseEntity.ok(new TokenDto(token, "Bearer"));
+				} catch (AuthenticationException e) {
+					return ResponseEntity.badRequest().build();
+				}
+			}
+
+		}
+
+
 - No pacote br.com.fuctura.escola.dto, adicionar a classe TokenDto
+
+		public class TokenDto {
+
+			private String token;
+			private String tipo;
+
+			public TokenDto(String token, String tipo) {
+				this.token = token;
+				this.tipo = tipo;
+			}
+
+			public String getToken() {
+				return token;
+			}
+
+			public String getTipo() {
+				return tipo;
+			}
+
+		}
 
 - No Postman, vamos criar uma requisição POST para a url localhost:8080/auth, e passando no corpo da requisição as informações referentes ao usuário logado:
 

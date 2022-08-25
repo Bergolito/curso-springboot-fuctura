@@ -122,9 +122,72 @@
 
 - Qual foi o resultado na sua máquina? Deu tudo certo?
 
-## Documentando sua API com Swagger
+## Documentando sua API com Spring Doc Open Api
 
--
+- Documentação Oficial do Spring Doc: https://springdoc.org/#Introduction
+
+
+- Adicionar uma nova dependência no pom
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.11</version>
+		</dependency>
+
+- No application.properties, adicionar uma nova configuração
+
+	# swagger-ui custom path
+	springdoc.swagger-ui.path=/swagger-ui.html
+
+
+
+- Criar um novo pacote br.com.fuctura.escola.config, e dentro dele, criar a classe SwaggerConfigurations, adicionando uma nova anotação @Configuration
+
+	@Configuration
+	public class SwaggerConfigurations {
+
+		@Bean
+		public GroupedOpenApi publicApi() {
+			return GroupedOpenApi.builder().group("br.com.fuctura").pathsToMatch("/**").build();
+		}
+
+	}
+
+- No pacote br.com.fuctura.escola.config.security, crie a classe SecurityConfigurations
+
+	@EnableWebSecurity
+	@Configuration
+	public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
+
+		// Configuracoes de autenticacao
+		@Override
+		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+			//
+		}
+
+		//Configuracoes de autorizacao
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			//
+		}
+
+		//Configuracoes de recursos estaticos(js, css, imagens, etc.)
+		@Override
+		public void configure(WebSecurity web) throws Exception {
+			web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
+		}
+
+	}
+	
+- Após isto, adicione as tags de documentação no controlador de Alunos
+
+
+	- Em listaAlunos(): @Operation(summary = "listarAlunos", description = "listar os alunos da escola")
+	- Em detalhar(): 	@Operation(summary = "detalhar", description = "detalha um aluno de acordo com o Id")
+
+
+
 
 ## Melhorando seu código com Projeto Lombok
 

@@ -4,163 +4,129 @@
 
 ## Aula 05 - 27/08/2022
 
-# Protegendo a API com Spring Security
+## Monitorando sua aplicação com Spring Actuator
 
-- No pom, adicionar as seguintes dependências referente ao Spring Security e ao JWT:
+- Adicionar a dependência no pom
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-    
+
+- Após configurar a dependência, já teremos disponível na nossa aplicação, mais um endpoint, acessível através da url http://localhost:8080/actuator
+
+		{
+		    "_links": {
+			"self": {
+			    "href": "http://localhost:8080/actuator",
+			    "templated": false
+			},
+			"health": {
+			    "href": "http://localhost:8080/actuator/health",
+			    "templated": false
+			},
+			"health-path": {
+			    "href": "http://localhost:8080/actuator/health/{*path}",
+			    "templated": true
+			}
+		    }
+		}
+		
+- Tentar acessar a url localhost:8080/actuator/health e ver se o sistema está no AR
+
+		{
+		    "status": "UP",
+		    "components": {
+			"db": {
+			    "status": "UP",
+			    "details": {
+				"database": "H2",
+				"validationQuery": "isValid()"
+			    }
+			},
+			"diskSpace": {
+			    "status": "UP",
+			    "details": {
+				"total": 944057839616,
+				"free": 452381790208,
+				"threshold": 10485760,
+				"exists": true
+			    }
+			},
+			"ping": {
+			    "status": "UP"
+			}
+		    }
+		}
+
+- Adicionar mais informações no application.properties
+
+		# actuator
+		management.endpoint.health.show-details=always
+		management.endpoints.web.exposure.include=*
+		info.app.name=@project.name@
+		info.app.version=@project.version@
+
+- Para monitorar nossa aplicação, usaremos uma ferramenta chamada Spring Boot Admin: https://github.com/codecentric/spring-boot-admin
+
+- Necessário criar uma nossa aplicação no Spring Initializr, com os valores de group=br.com.fuctura, artifact=spring-boot-admin e adicionar as seguintes dependências:
+
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
+		    <groupId>de.codecentric</groupId>
+		    <artifactId>spring-boot-admin-starter-server</artifactId>
+		    <version>2.6.6</version>
 		</dependency>
-    
-- No pacote br.com.fuctura.escola.model, adicionar as seguintes classes: Perfil.java e Usuario.java
-
-- Na classe Usuario.java, observar o detalhe:
-
-	@Entity <br>
-	public class Usuario implements UserDetails {
-
-	}
-
-	@Entity <br>
-	public class Perfil implements GrantedAuthority {
-
-	}
-	
-- No arquivo data.sql, adicionar os inserts referentes ao Usuário:
-
-      /*
-       * Cadastro de Usuários
-       */ 
-      INSERT INTO USUARIO(nome, email, senha) VALUES('Aluno', 'aluno@escola.com', '$2a$10$pzGb4RsG6syepEiry9xGxuSX2oOKL8K6G9PO21VJkBquKpEtMSpVS');
-      INSERT INTO USUARIO(nome, email, senha) VALUES('Professor', 'prof@escola.com', '$2a$10$pzGb4RsG6syepEiry9xGxuSX2oOKL8K6G9PO21VJkBquKpEtMSpVS');
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
 
-- No pacote br.com.fuctura.escola.repository, criar a classe referente ao Repositório de Usuário: UsuarioRepository.java
+- Na classe principal do projeto, adicione as remova a anotação que existe e adicione as 3 novas anotações:
 
-		public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-
-		    Optional<Usuario> findByEmail (String email);
+		@Configuration
+		@EnableAutoConfiguration
+		@EnableAdminServer
+		public class SpringBootAdminApplication {
+		    public static void main(String[] args) {
+			SpringApplication.run(SpringBootAdminApplication.class, args);
+		    }
 		}
 
-- Criar o pacote  br.com.fuctura.escola.config.security, dentro dele colar as seguintes classes: AutenticacaoService, AutenticacaoViaTokenFilter, SecurityConfigurations e TokenService
+- No arquivo application.properties, adicione a nova porta do admin para não conflitar com a nossa aplicação da API Escola que roda na porta 8080
 
-- Na classe SecurityConfigurations, observar as anotações @EnableWebSecurity e @Configuration, e observar o método configure(HttpSecurity http) referente às configurações de Autorização:
+	server.port=8081
 
-        // Configuracoes de autorizacao
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-          http.authorizeRequests()
-          .antMatchers(HttpMethod.GET, "/alunos").permitAll()
-          .antMatchers(HttpMethod.GET, "/alunos/*").permitAll()
-          .antMatchers(HttpMethod.POST, "/auth").permitAll()
-          .anyRequest().authenticated()
-          .and().csrf().disable()
-          .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-          .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
-        }
-
-- No arquivo application.properties, adicionar 2 novas keys:
-
-      # jwt
-      escola.jwt.secret=A+X;fTJP&Pd,TD9dwVq(hsHX,ya^<wsD_UK7L+@=S;{'CydP]{v@}G'b>et;yz$*\yL5S8EJN:%P:X%H9>#nYLrX}@\s?CQcpspH,2emzBc!Q[V'AYa~uzF8WR~AUrMzxp/V$9([S9X#zj/CH('#]B_Hc+%fGhe27YB;^j4\Xk=Ju"Ap~_&<L;=!Z;!,2UP;!hF3P]j85#*`&T]/kB/W^6$v~u6qpejL>kY^f)sy4:qTq_Ec!-z!@aAp~sLKGU>$
-      escola.jwt.expiration=86400000
-
-- Agora, vamos testar quais os endpoints estão liberados. Tente acessar as seguintes urls referentes ao listarAlunos(), detalharAluno() e cadastrarAluno():
-
-  http://localhost:8080/alunos <br>
-  http://localhost:8080/alunos/1 <br>
-  
- 
-- Qual foi o resultado ao tentar acessar a requisição POST? 
- 
-# Autenticação de Usuário
-
-- No pacote br.com.fuctura.escola.controller.form, adicionar a classe LoginForm
-
-- No pacote br.com.fuctura.escola.controller, adicionar a classe AutenticacaoController
-
-		@RestController
-		@RequestMapping("/auth")
-		public class AutenticacaoController {
-
-			@Autowired
-			private AuthenticationManager authManager;
-
-			@Autowired
-			private TokenService tokenService;
-
-			@PostMapping
-			public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form) {
-				UsernamePasswordAuthenticationToken dadosLogin = form.converter();
-
-				try {
-					Authentication authentication = authManager.authenticate(dadosLogin);
-					String token = tokenService.gerarToken(authentication);
-					System.out.println("Token => "+token);
-					return ResponseEntity.ok(new TokenDto(token, "Bearer"));
-				} catch (AuthenticationException e) {
-					return ResponseEntity.badRequest().build();
-				}
-			}
-
-		}
+- Após configurado tudo certo, inicie o projeto do spring-boot-admin, acesse a url http://localhost:8081/ e veja o resultado
 
 
-- No pacote br.com.fuctura.escola.dto, adicionar a classe TokenDto
+- Agora precisamos configurar a nossa API de Escola para ser monitorada pelo Spring Boot Admin
 
-		public class TokenDto {
+- Adicione as duas novas dependências no pom da API Escola
 
-			private String token;
-			private String tipo;
+		<dependency>
+		    <groupId>de.codecentric</groupId>
+		    <artifactId>spring-boot-admin-starter-client</artifactId>
+		    <version>2.5.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
-			public TokenDto(String token, String tipo) {
-				this.token = token;
-				this.tipo = tipo;
-			}
+- No application.properties da aplicacação cliente (API Escola), definir qual será o endereço do Spring Boot Admin
 
-			public String getToken() {
-				return token;
-			}
+	spring.boot.admin.client.url=http://localhost:8081
 
-			public String getTipo() {
-				return tipo;
-			}
+- Agora com tudo configurado, inicie a aplicação da API Escola e veja o resultado do monitoramento do Spring Boot Admin
 
-		}
+- Qual foi o resultado na sua máquina? Deu tudo certo?
 
-- No Postman, vamos criar uma requisição POST para a url localhost:8080/auth, e passando no corpo da requisição as informações referentes ao usuário logado:
+## Documentando sua API com Swagger
 
+-
 
-      {
-          "email":"prof@escola.com",
-          "senha": "123456" 
-      }
-    
-    ou     
-    
-      {
-          "email":"aluno@escola.com",
-          "senha": "123456" 
-      }
+## Melhorando seu código com Projeto Lombok
 
-
-- Após a requisição POST, espera-se o seguinte resultado:
-
-      {
-          "token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUEkgZGUgQ29udHJvbGUgZGEgRXNjb2xhIiwic3ViIjoiMiIsImlhdCI6MTY2MTQ1MDQ4NCwiZXhwIjoxNjYxNTM2ODg0fQ.kzQh6mcGMaDpRBENgcFkafCMroIuggAl8sU-PsL0XHo",
-          "tipo": "Bearer"
-      }
-
-- De posse do Token gerado pela autenticação, agora podemos fazer as requisições que estavam pendentes de autenticação.
-
-- Para o POST, PUT e DELETE, faz-se necessário adicionar na aba Headers a chave Authorization => Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUEkgZGUgQ29udHJvbGUgZGEgRXNjb2xhIiwic3ViIjoiMiIsImlhdCI6MTY2MTQ1MDc2OSwiZXhwIjoxNjYxNTM3MTY5fQ.wV4sFKcSt6O8BMe_pwOBR7C6AGehxBKDOh0N1oRW7Q0 
-
-- Após isto, será possível realizar as inserções, atualizações e deleções
+-
 

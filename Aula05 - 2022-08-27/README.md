@@ -8,14 +8,27 @@
 
 - Criar o pacote br.com.fuctura.escola.config.security e dentro dele, crie a classe SecurityConfigurations.java:
 
+		@EnableWebSecurity
 		@Configuration
 		public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
-		    @Override
-		    protected void configure(HttpSecurity http) throws Exception {
-			http.authorizeRequests().anyRequest().permitAll()  
-			    .and().csrf().disable();
-		    }
+			// Configuracoes de autenticacao
+			@Override
+			protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+				//
+			}
+
+			@Override
+			protected void configure(HttpSecurity http) throws Exception {
+				http.authorizeRequests().anyRequest().permitAll()  
+				    .and().csrf().disable();
+			}
+		    
+		    	// Configuracoes de recursos estaticos(js, css, imagens, etc.)
+			@Override
+			public void configure(WebSecurity web) throws Exception {
+				//
+			}
 		}
 
 
@@ -167,31 +180,14 @@
 
 	}
 
-- No pacote br.com.fuctura.escola.config.security, crie a classe SecurityConfigurations
+- Na classe SecurityConfigurations, do pacote br.com.fuctura.escola.config.security, atualize o método configure(WebSecurity web)
 
-	@EnableWebSecurity
-	@Configuration
-	public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
-
-		// Configuracoes de autenticacao
-		@Override
-		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-			//
-		}
-
-		//Configuracoes de autorizacao
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			//
-		}
 
 		//Configuracoes de recursos estaticos(js, css, imagens, etc.)
 		@Override
 		public void configure(WebSecurity web) throws Exception {
 			web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
 		}
-
-	}
 	
 - Após isto, adicione as tags de documentação no controlador de Alunos
 

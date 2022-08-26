@@ -233,4 +233,18 @@
 		    <scope>provided</scope>
 		</dependency>
 
+- Agora que o Lombok já está instalado na sua IDE e também,  a dependência foi adicionada no projeto, podemos ajustar todas as classes de Entidade (Aluno, Professor, Curso, Turma, Matricula) e também as classes de DTO (AlunoDTO, AlunoForm, AtualizacaoAlunoForm) etc. 
+
+
+		@Entity
+		@Table
+		@NoArgsConstructor @AllArgsConstructor 
+		@Data
+		public class Aluno implements Serializable {
+		     //
+		}
+
+- Para Aluno, podemos ajustar as classes de Entidade (Aluno) e as classes de DTO (AlunoDTO, AlunoForm, AtualizacaoAlunoForm), adicionar o construtor sem argumentos, com todos os campos e removendo os getters e setters depois de adicionar a anotação @Data.
+
+
 

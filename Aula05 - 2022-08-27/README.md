@@ -191,5 +191,38 @@
 
 ## Melhorando seu código com Projeto Lombok
 
--
+- Site oficial do Lombok: (https://projectlombok.org/)
+
+- Para que serve o Lombok?
+
+- Onde baixar o instalador? (https://projectlombok.org/download)
+
+- Como instalar na sua IDE? (https://projectlombok.org/setup/eclipse)
+
+	- Baixar o arquivo .jar para qualquer pasta do seu computador.
+	- Executar o seguinte comando: java -jar lombok.jar
+	- Após abrir a tela do instalador, clicar no botão "Specify location..." e indicar qual é o diretório onde está instalado a sua IDE
+	- Ao selecionar o diretório da instalação, clique no arquivo SpringToolSuite4.ini à direita e clique no botão "Select"
+	- Após isto, clique no botão "Install/Update"
+	- Se tudo deu certo, aparecerá uma tela com a mensagem de instalação com sucesso "Install Successful"
+	- Feche a tela de instalação no botão "Quit Install"
+	- Feche o Eclipse/STS e o abra novamente
+	- Após Eclipse/STS abrir, vá na opção Help e depois About Spring Tool Suite 4. Verifique se apareceu a opção referente ao Lombok. 
+	
+	<strong>Exemplo: Lombok v1.18.24 "Envious Ferret" is installed. https://projectlombok.org/</strong>
+	
+	
+	
+	
+	
+
+- Para habilitar o Lombok no seu projeto, é necessário adicionar a seguinte dependência:
+
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.24</version>
+		    <scope>provided</scope>
+		</dependency>
+
 

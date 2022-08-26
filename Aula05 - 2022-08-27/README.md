@@ -6,6 +6,19 @@
 
 ## Monitorando sua aplicação com Spring Actuator
 
+- Criar o pacote br.com.fuctura.escola.config.security e dentro dele, crie a classe SecurityConfigurations.java:
+
+		@Configuration
+		public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
+
+		    @Override
+		    protected void configure(HttpSecurity http) throws Exception {
+			http.authorizeRequests().anyRequest().permitAll()  
+			    .and().csrf().disable();
+		    }
+		}
+
+
 - Adicionar a dependência no pom
 
 		<dependency>

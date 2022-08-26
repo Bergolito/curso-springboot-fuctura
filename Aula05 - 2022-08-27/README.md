@@ -205,11 +205,19 @@
 	- Ao selecionar o diretório da instalação, clique no arquivo SpringToolSuite4.ini à direita e clique no botão "Select"
 	- Após isto, clique no botão "Install/Update"
 	- Se tudo deu certo, aparecerá uma tela com a mensagem de instalação com sucesso "Install Successful"
+	
+	![Lombok instalação OK!](https://github.com/Bergolito/curso-springboot-fuctura/blob/main/Aula05%20-%202022-08-27/lombok-sucesso.png "Lombok instalação OK")
+	
 	- Feche a tela de instalação no botão "Quit Install"
 	- Feche o Eclipse/STS e o abra novamente
 	- Após Eclipse/STS abrir, vá na opção Help e depois About Spring Tool Suite 4. Verifique se apareceu a opção referente ao Lombok. 
 	
 	<strong>Exemplo: Lombok v1.18.24 "Envious Ferret" is installed. https://projectlombok.org/</strong>
+	
+	![Lombok instalação OK!](https://github.com/Bergolito/curso-springboot-fuctura/blob/main/Aula05%20-%202022-08-27/lombok-sts-OK.png "Lombok rodando OK no STS")
+	
+	
+	
 	
 	
 	

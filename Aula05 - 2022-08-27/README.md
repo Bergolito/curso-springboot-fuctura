@@ -6,6 +6,13 @@
 
 ## Monitorando sua aplicação com Spring Actuator
 
+- Adicionar a seguinte dependẽncia referente à Segurança
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
 - Criar o pacote br.com.fuctura.escola.config.security e dentro dele, crie a classe SecurityConfigurations.java:
 
 		@EnableWebSecurity

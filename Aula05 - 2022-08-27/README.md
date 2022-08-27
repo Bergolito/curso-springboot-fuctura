@@ -254,8 +254,9 @@
 
 		@Entity
 		@Table
-		@NoArgsConstructor @AllArgsConstructor 
+		@NoArgsConstructor @AllArgsConstructor
 		@Data
+		@EqualsAndHashCode @ToString
 		public class Aluno implements Serializable {
 		     //
 		}

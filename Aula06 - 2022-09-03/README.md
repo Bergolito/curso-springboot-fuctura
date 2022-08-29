@@ -108,6 +108,18 @@
                 }
 
 
+# Named Queries
+
+                @NamedQuery(name = "Aluno.findByEmail", query = "select a from Aluno a where a.email = ?1")
+                @NamedQuery(name = "Aluno.findByFone",  query = "select a from Aluno a where a.fone = ?1")
+                @NamedQuery(name = "Aluno.findByEmailAndFone", 
+                        query = "select a from Aluno a where a.email = ?1 and a.fone = ?1")
+                @NamedQuery(name = "Aluno.findByEmailOrFone", 
+                        query = "select a from Aluno a where a.email = ?1 or a.fone = ?1")
+                @NamedQuery(name = "Aluno.findByTipo",  query = "select a from Aluno a where a.tipo = ?1")
+                public class Aluno implements Serializable {
+                        //
+                }
 
 
 ## Projeto da API de Escola

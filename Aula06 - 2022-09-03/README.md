@@ -81,13 +81,34 @@
     spring.thymeleaf.cache=false
 
 
-# Derivated Queries
+# Repository Query Methods
 
-- Derivated Queries
+- [Query Methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods)
 
-# Named Queries
+- Palavras chaves para criação de Queries: Distinct, And, Or, Between, Is, Equal, etc  
 
-- Named Queries
+
+# Construindo Queries com @Query
+
+                public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+
+                        Page<Aluno> findByNome(String nomeAluno, Pageable paginacao);
+
+                        List<Aluno> findByCpf(String cpf);
+
+                        List<Aluno> findByEmailAndFone(String email, String fone);
+
+                        List<Aluno> findByEmailOrFone(String email, String fone);
+
+                        @Query("select a from Aluno a where a.email = ?1")
+                        List<Aluno> findByEmail(String email);
+
+                        @Query("select a from Aluno a where a.fone = ?1")
+                        List<Aluno> findByFone(String fone);
+                }
+
+
+
 
 ## Projeto da API de Escola
 

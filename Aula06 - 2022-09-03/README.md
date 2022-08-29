@@ -22,7 +22,7 @@
 
             private List<String> assuntos = Arrays.asList("Rest", "MVC", "API", "JSON", "Java", "Controller", "JPA");
 
-            @GetMapping("/")
+            @RequestMapping(value="/", method = RequestMethod.GET)
             public String main(Model model) {
                 model.addAttribute("message", "Olá Aluno, seja bem vindo ao curso de Spring Boot da Fuctura");
                 model.addAttribute("assuntos", assuntos);

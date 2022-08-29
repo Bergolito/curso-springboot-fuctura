@@ -46,35 +46,38 @@
 
 - No diretório src/main/resources/templates/, criar o arquivo HTML com o nome <strong>welcome.html</strong>
 
-        <!DOCTYPE HTML>
-        <html lang="en" xmlns:th="http://www.thymeleaf.org">
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <title> Spring Boot Thymeleaf Fuctura</title>
-        </head>
+		<!DOCTYPE HTML>
+		<html lang="en" xmlns:th="http://www.thymeleaf.org">
+		<head>
+		    <meta charset="utf-8">
+		    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		    <title>Spring Boot Thymeleaf Fuctura</title>
+		    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+		    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+		</head>
 
-        <body>
+		<body>
 
-        <main role="main" class="container">
+		<main role="main" class="container">
 
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCpE4j0_9z28bBm16L_pnFlq4ip65HWKlx9-Vg_lzQ&s">
-            <div class="starter-template">
-                <h1>Curso de Spring Boot</h1>
-                <h2>
-                    <span th:text="${message}"></span>
-                </h2>
-            </div>
+		    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCpE4j0_9z28bBm16L_pnFlq4ip65HWKlx9-Vg_lzQ&s">
+		    <div class="starter-template">
+			<h1>Curso de Spring Boot da Fuctura</h1>
+			<h2>
+			    <span th:text="'Hello, ' + ${message}"></span>
+			</h2>
+		    </div>
 
-          <p> Assuntos estudados no curso:
-            <ol>
-                <li th:each="assunto : ${assuntos}" th:text="${assunto}"></li>
-            </ol>
+		    <ol>
+			<li th:each="assunto : ${assuntos}" th:text="${assunto}"></li>
+		    </ol>
 
-        </main>
+		</main>
 
-        </body>
-        </html>
+		<script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+		</body>
+		</html>        
+	
 
 - No application.properties, adicionar a seguinte propriedade
 

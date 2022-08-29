@@ -4,14 +4,17 @@
 
 ## Aula 06 - 03/09/2022
 
+# Thymeleaf
 
-## Projeto Lombok
+- Thymeleaf
 
-- projeto Lombok
+# Derivated Queries
 
-## Swagger
+- Derivated Queries
 
-- Swagger
+# Named Queries
+
+- Named Queries
 
 ## Projeto da API de Escola
 

@@ -6,7 +6,80 @@
 
 # Thymeleaf
 
-- Thymeleaf
+- Adicionar a dependência
+
+
+        <!-- thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+- No pacote br.com.fuctura.escola.controller, criar a classe WelcomeController, e colocar o conteúdo abaixo
+
+        @Controller
+        public class WelcomeController {
+
+            private List<String> assuntos = Arrays.asList("Rest", "MVC", "API", "JSON", "Java", "Controller", "JPA");
+
+            @GetMapping("/")
+            public String main(Model model) {
+                model.addAttribute("message", "Olá Aluno, seja bem vindo ao curso de Spring Boot da Fuctura");
+                model.addAttribute("assuntos", assuntos);
+
+                return "welcome"; //view
+            }
+
+            // hello?name=Bergson
+            @GetMapping("/hello")
+            public String mainWithParam(
+                    @RequestParam(name = "name", required = false, defaultValue = "") 
+              String name, Model model) {
+
+                model.addAttribute("message", "Olá "+name+", seja bem vindo ao curso de Spring Boot da Fuctura");
+                model.addAttribute("assuntos", assuntos);
+
+                return "welcome"; //view
+            }
+
+        }
+
+- No diretório src/main/resources/templates/, criar o arquivo HTML com o nome <strong>welcome.html</strong>
+
+        <!DOCTYPE HTML>
+        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <title> Spring Boot Thymeleaf Fuctura</title>
+        </head>
+
+        <body>
+
+        <main role="main" class="container">
+
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCpE4j0_9z28bBm16L_pnFlq4ip65HWKlx9-Vg_lzQ&s">
+            <div class="starter-template">
+                <h1>Curso de Spring Boot</h1>
+                <h2>
+                    <span th:text="${message}"></span>
+                </h2>
+            </div>
+
+          <p> Assuntos estudados no curso:
+            <ol>
+                <li th:each="assunto : ${assuntos}" th:text="${assunto}"></li>
+            </ol>
+
+        </main>
+
+        </body>
+        </html>
+
+- No application.properties, adicionar a seguinte propriedade
+
+    spring.thymeleaf.cache=false
+
 
 # Derivated Queries
 

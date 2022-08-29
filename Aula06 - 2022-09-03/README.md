@@ -80,6 +80,10 @@
 
     spring.thymeleaf.cache=false
 
+- Se tudo deu certo, vamos ver a seguinte apresentação
+
+	![Apresentação com Thymeleaf!](https://github.com/Bergolito/curso-springboot-fuctura/blob/main/Aula06%20-%202022-09-03/tela-boas-vindas.png "Apresentação com Thymeleaf")
+        
 
 # Repository Query Methods
 

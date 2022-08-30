@@ -209,8 +209,7 @@
 
 - Se tudo ocorreu bem até aqui, acesse a url http://localhost:8080/alunos/relatorio-pdf para ter acesso ao relatório dos registros de alunos em PDF
 
-/home/03795871492/Imagens/relatorio.png
-
+[Relatório de Alunos em PDF](https://github.com/Bergolito/curso-springboot-fuctura/blob/main/Aula06%20-%202022-09-03/relatorio.png)
 
 
 # Repository Query Methods
@@ -256,6 +255,10 @@
 
 ## Projeto da API de Escola
 
-- projeto da API de Escola
+- Segue o projeto nossa API de Escola que se propõe a praticar tudo o que aprendemos sobre o Spring Boot nesses 07 encontros que tivemos.
+
+[Projeto da API de Escola](https://github.com/Bergolito/curso-springboot-fuctura/blob/main/Aula06%20-%202022-09-03/Aula06-projeto-API-Escola.pdf)
+
+
 
 

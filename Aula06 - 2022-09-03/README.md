@@ -87,6 +87,131 @@
 
 	![Apresentação com Thymeleaf!](https://github.com/Bergolito/curso-springboot-fuctura/blob/main/Aula06%20-%202022-09-03/tela-boas-vindas.png "Apresentação com Thymeleaf")
         
+# Relatórios em PDF
+
+- Para exportar os relatórios no formato PDF, precisaremos adicionar mais uma dependência:
+
+		<dependency>
+			<groupId>com.github.librepdf</groupId>
+			<artifactId>openpdf</artifactId>
+			<version>1.3.8</version>
+		</dependency>
+
+- Crie o pacote br.com.fuctura.escola.services, e dentro dele crie a classe AlunoServices
+
+		@Service
+		@Transactional
+		public class AlunoServices {
+
+			@Autowired
+			private AlunoRepository repositorioAlunos;
+
+			public List<Aluno> listarTodosAlunos() {
+				return repositorioAlunos.findAll(Sort.by("id").ascending());
+			}
+
+		}
+
+- Crie o pacote br.com.fuctura.escola.report, e dentro dele crie a classe AlunoPDFExporter
+
+		public class AlunoPDFExporter {
+
+		    private List<Aluno> listaAlunos;
+
+		    public AlunoPDFExporter(List<Aluno> listaAlunos) {
+			this.listaAlunos = listaAlunos;
+		    }
+
+		    private void writeTableHeader(PdfPTable table) {
+			PdfPCell cell = new PdfPCell();
+			cell.setBackgroundColor(Color.BLUE);
+			cell.setPadding(5);
+
+			Font font = FontFactory.getFont(FontFactory.HELVETICA);
+			font.setColor(Color.WHITE);
+
+			cell.setPhrase(new Phrase("ID", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("Nome", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("Cpf", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("E-mail", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("Fone", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("Tipo", font));
+			table.addCell(cell);
+		    }
+
+		    private void writeTableData(PdfPTable table) {
+			for (Aluno aluno : listaAlunos) {
+			    table.addCell(String.valueOf(aluno.getId()));
+			    table.addCell(aluno.getNome());
+			    table.addCell(aluno.getCpf());
+			    table.addCell(aluno.getEmail());
+			    table.addCell(aluno.getFone());
+			    table.addCell(aluno.getTipo());
+			}
+		    }
+
+		    public void export(HttpServletResponse response) throws DocumentException, IOException {
+			Document document = new Document(PageSize.A4);
+			PdfWriter.getInstance(document, response.getOutputStream());
+
+			document.open();
+			Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+			font.setSize(18);
+			font.setColor(Color.BLUE);
+
+			Paragraph p = new Paragraph("Lista de Alunos", font);
+			p.setAlignment(Paragraph.ALIGN_CENTER);
+
+			document.add(p);
+
+			PdfPTable table = new PdfPTable(6);
+			table.setWidthPercentage(100f);
+			table.setWidths(new float[] {1.5f, 3.5f, 3.0f, 3.0f, 1.5f, 1.5f});
+			table.setSpacingBefore(10);
+
+			writeTableHeader(table);
+			writeTableData(table);
+
+			document.add(table);
+
+			document.close();
+
+		    }
+		}
+
+- Na classe AlunoController, adicione o seguinte método abaixo:
+
+	@GetMapping("/relatorio-pdf")
+	public void exportarRelatorioPDF(HttpServletResponse response) throws DocumentException, IOException {
+		response.setContentType("application/pdf");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
+		response.setHeader(headerKey, headerValue);
+
+		List<Aluno> listaAlunos = alunoService.listarTodosAlunos();
+
+		AlunoPDFExporter exporter = new AlunoPDFExporter(listaAlunos);
+		exporter.export(response);
+	}
+
+- Se tudo ocorreu bem até aqui, acesse a url http://localhost:8080/alunos/relatorio-pdf para ter acesso ao relatório dos registros de alunos em PDF
+
+/home/03795871492/Imagens/relatorio.png
+
+
 
 # Repository Query Methods
 

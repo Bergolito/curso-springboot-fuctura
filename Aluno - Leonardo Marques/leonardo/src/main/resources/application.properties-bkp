@@ -1,0 +1,21 @@
+# ====================================
+# CONFIGURACOES EM GERAL
+# ====================================
+
+# datasource
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.url=jdbc:h2:mem:escola-controle-api
+spring.datasource.username=sa
+spring.datasource.password=
+
+# jpa
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+
+# ATENCAO
+spring.jpa.defer-datasource-initialization=true
+
+# Console do banco H2
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+

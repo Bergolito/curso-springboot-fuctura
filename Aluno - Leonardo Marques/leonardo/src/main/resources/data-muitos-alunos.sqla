@@ -1,0 +1,20 @@
+
+
+INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+('11111111111', 'Huguinho', 'aluno111@escola.com', '81 1234-5555', 'CONVENCIONAL');
+
+INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+('22222222222', 'Zezinho', 'aluno222@escola.com', '81 1234-5555', 'CONVENCIONAL');
+
+INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+('33333333333', 'Luizinho', 'aluno333@escola.com', '81 1234-5555', 'MONITOR');
+
+#
+INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+('12312312322', 'Huguinho 123', 'aluno123@escola.com', '81 1234-5555', 'CONVENCIONAL');
+
+INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+('12412412424', 'Huguinho 124', 'aluno124@escola.com', '81 1234-5555', 'CONVENCIONAL');
+
+INSERT INTO ALUNO (cpf, nome, email, fone, tipo) VALUES  
+('12512512525', 'Huguinho 125', 'aluno125@escola.com', '81 1234-5555', 'CONVENCIONAL');
